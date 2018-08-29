@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace WebShopMVC.Models
 {
-    public partial class WebShopDBContext : DbContext
-    {
+    public partial class WebShopDBContext : DbContext, IWebShopDBContext
+	{
         public WebShopDBContext()
         {
         }
@@ -35,15 +35,11 @@ namespace WebShopMVC.Models
         {
             modelBuilder.Entity<Category>(entity =>
             {
-                entity.Property(e => e.CategoryId).ValueGeneratedNever();
-
                 entity.Property(e => e.Description).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Customer>(entity =>
             {
-                entity.Property(e => e.CustomerId).ValueGeneratedNever();
-
                 entity.Property(e => e.ContactInfo).HasMaxLength(50);
 
                 entity.Property(e => e.FirtsName).HasMaxLength(50);
@@ -53,8 +49,6 @@ namespace WebShopMVC.Models
 
             modelBuilder.Entity<Order>(entity =>
             {
-                entity.Property(e => e.OrderId).ValueGeneratedNever();
-
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Order)
                     .HasForeignKey(d => d.CustomerId)
@@ -63,8 +57,6 @@ namespace WebShopMVC.Models
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.Property(e => e.ProductId).ValueGeneratedNever();
-
                 entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.Property(e => e.Quantity).HasMaxLength(50);
