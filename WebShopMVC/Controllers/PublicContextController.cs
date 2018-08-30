@@ -15,7 +15,6 @@ namespace WebShopMVC.Controllers
         }
 		public IActionResult ChangeInMemory()
 		{
-			PublicContext.ChangeInMemory();
 			return View("Index");
 		}
 	}

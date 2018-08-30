@@ -34,10 +34,11 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
-                <form asp-action=PublicContext.ChangeInMemory()>
-                    <p>@Html.Action("ChangeInMemory")</p>
-                    <input type="submit" value="ChangeInMemory" class="btn btn-default" /> |
-                </form>
+                <div class="row">
+                    <form asp-controller="Home" asp-action="ChangeDatabase">
+                        <input type="submit" value="ChangeDatabase" class="btn btn-default" /> |
+                    </form>
+                </div>
             </div>
         </div>
     </nav>

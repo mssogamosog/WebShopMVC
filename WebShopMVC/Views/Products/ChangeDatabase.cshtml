@@ -1,0 +1,24 @@
+﻿@using WebShopMVC.Models
+
+@model InMemory
+@{
+    ViewData["Title"] = "ChangeDatabase";
+}
+
+<h2>ChangeDatabase</h2>
+<div class="row">
+    @using (Html.BeginForm("ChangeDatabase", "Products"))
+    {
+        foreach (var type in (InMemory[])Enum.GetValues(typeof(InMemory)))
+        {
+            var current = (string)ViewData["current"] == type.ToString() ? true : false;
+            @Html.RadioButton("connection", type, current) <span>@type.ToString()</span> <br />
+        }
+        <hr />
+        <input type="submit" value="Save" />
+    }
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

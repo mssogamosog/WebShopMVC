@@ -14,7 +14,9 @@ namespace WebShopMVC.Models
         public string FirtsName { get; set; }
         public string LastName { get; set; }
         public string ContactInfo { get; set; }
+        public int? CartId { get; set; }
 
+        public Cart Cart { get; set; }
         public ICollection<Order> Order { get; set; }
     }
 }

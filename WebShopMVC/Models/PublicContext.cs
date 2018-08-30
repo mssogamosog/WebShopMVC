@@ -9,18 +9,6 @@ namespace WebShopMVC.Models
 {
 	public static class PublicContext
 	{
-		public static bool InMemory = false;
-		public static void ChangeInMemory()
-		{
-			InMemory = !InMemory;
-		}
-		public static readonly IWebShopDBContext _context2 =
-			new WebShopDBContext(
-			new DbContextOptionsBuilder<WebShopDBContext>()
-				.UseInMemoryDatabase()
-				.UseInternalServiceProvider(new ServiceCollection()
-				.AddEntityFrameworkInMemoryDatabase()
-				.BuildServiceProvider())
-				.Options);
+		public static InMemory _InMemory = InMemory.WebShopDBContext;
 	}
 }

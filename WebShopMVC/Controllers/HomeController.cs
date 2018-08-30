@@ -10,6 +10,19 @@ namespace WebShopMVC.Controllers
 {
 	public class HomeController : Controller
 	{
+		public IActionResult ChangeDatabase()
+		{
+			if (PublicContext._InMemory == InMemory.WebShopDBContext)
+			{
+				PublicContext._InMemory = InMemory.WebShopDBContextInMemory;
+			}
+			else
+			{
+				PublicContext._InMemory = InMemory.WebShopDBContext;
+			}
+
+			return RedirectToAction("Index","Products");
+		}
 		public IActionResult Index()
 		{
 			return View();

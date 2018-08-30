@@ -39,7 +39,9 @@ namespace WebShopMVC
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddMvc();
 			ContainerBuilder builder = new ContainerBuilder();
-			builder.RegisterType<WebShopDBContext>().As<IWebShopDBContext>().InstancePerLifetimeScope();
+			builder.RegisterType<WebShopDBContext>().Keyed<IWebShopDBContext>("WebShopDBContext");
+			builder.RegisterType<WebShopDBContextInMemory>().Keyed<IWebShopDBContext>("WebShopDBContextInMemory");
+			//builder.RegisterType<WebShopDBContext>().As<IWebShopDBContext>().InstancePerLifetimeScope();
 			//services.AddDbContext<IWebShopDBContext>(opt => opt.UseInMemoryDatabase("InMemoryDb"));
 			builder.Populate(services);
 			var container = builder.Build();

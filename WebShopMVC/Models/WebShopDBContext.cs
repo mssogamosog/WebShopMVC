@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace WebShopMVC.Models
 {
-    public partial class WebShopDBContext : DbContext, IWebShopDBContext
-	{
+    public partial class WebShopDBContext : DbContext
+    {
         public WebShopDBContext()
         {
         }
@@ -15,6 +15,8 @@ namespace WebShopMVC.Models
         {
         }
 
+        public virtual DbSet<Cart> Cart { get; set; }
+        public virtual DbSet<CartProducts> CartProducts { get; set; }
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<Order> Order { get; set; }
@@ -33,6 +35,23 @@ namespace WebShopMVC.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CartProducts>(entity =>
+            {
+                entity.HasKey(e => new { e.ProductId, e.CartId });
+
+                entity.HasOne(d => d.Cart)
+                    .WithMany(p => p.CartProducts)
+                    .HasForeignKey(d => d.CartId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CartProducts_Cart");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.CartProducts)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CartProducts_Product");
+            });
+
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.Property(e => e.Description).HasMaxLength(50);
@@ -45,6 +64,11 @@ namespace WebShopMVC.Models
                 entity.Property(e => e.FirtsName).HasMaxLength(50);
 
                 entity.Property(e => e.LastName).HasMaxLength(50);
+
+                entity.HasOne(d => d.Cart)
+                    .WithMany(p => p.Customer)
+                    .HasForeignKey(d => d.CartId)
+                    .HasConstraintName("FK_Customer_Cart");
             });
 
             modelBuilder.Entity<Order>(entity =>

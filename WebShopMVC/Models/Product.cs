@@ -7,6 +7,7 @@ namespace WebShopMVC.Models
     {
         public Product()
         {
+            CartProducts = new HashSet<CartProducts>();
             ProductCategory = new HashSet<ProductCategory>();
             ProductOrder = new HashSet<ProductOrder>();
         }
@@ -17,6 +18,7 @@ namespace WebShopMVC.Models
         public double? Price { get; set; }
         public int? OrderId { get; set; }
 
+        public ICollection<CartProducts> CartProducts { get; set; }
         public ICollection<ProductCategory> ProductCategory { get; set; }
         public ICollection<ProductOrder> ProductOrder { get; set; }
     }
