@@ -33,12 +33,17 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
+                    <li><a asp-area="" asp-controller="CartProducts" asp-action="Index">Cart</a></li>
                 </ul>
-                <div class="row">
-                    <form asp-controller="Home" asp-action="ChangeDatabase">
-                        <input type="submit" value="ChangeDatabase" class="btn btn-default" /> |
-                    </form>
-                </div>
+                <ul >
+                    <div class="btn" >
+                        <form asp-controller="Home" asp-action="ChangeDatabase">
+                            <input type="submit" value="ChangeDatabase" class="btn btn-default" /> |
+                        </form>
+                    </div>
+                </ul>
+                
             </div>
         </div>
     </nav>

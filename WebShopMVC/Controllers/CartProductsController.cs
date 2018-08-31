@@ -65,14 +65,11 @@ namespace WebShopMVC.Controllers
             return View(await webShopDBContext.ToListAsync());
         }
 
-        // GET: CartProducts/Details/5
-        public async Task<IActionResult> Details(int id)
+		// GET: CartProducts/Details/5
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
+         
             var cartProducts = await _context.CartProducts
                 .Include(c => c.Cart)
                 .Include(c => c.Product)

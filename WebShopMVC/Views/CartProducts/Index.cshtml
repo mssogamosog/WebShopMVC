@@ -19,7 +19,11 @@
                 @Html.DisplayNameFor(model => model.Cart)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product)
+                Product Id
+            </th>
+
+            <th>
+                Product
             </th>
             <th></th>
         </tr>
@@ -37,8 +41,10 @@
                 @Html.DisplayFor(modelItem => item.Product.ProductId)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+            <td>
+                <a asp-action="Details" asp-controller="Products" asp-route-id="@item.Product.ProductId" >Edit</a> ]
                 <a asp-action="Delete" asp-route-ProductId="@item.Product.ProductId" asp-route-CartId="@item.Cart.CartId">Delete</a>
             </td>
         </tr>
