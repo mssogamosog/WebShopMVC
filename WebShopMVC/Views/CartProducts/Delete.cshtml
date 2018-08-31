@@ -1,4 +1,27 @@
-﻿@model WebShopMVC.Models.CartProducts
+﻿
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@model WebShopMVC.Models.CartProducts
 
 @{
     ViewData["Title"] = "Delete";
@@ -30,11 +53,8 @@
             @Html.DisplayFor(model => model.Product.ProductId)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ProductId" />
-        <input type="hidden" asp-for="CartId" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+
+    <form asp-controller="CartProducts" asp-action="Delete"  asp-route-ProductId="@Model.Product.ProductId" asp-route-CartId="@Model.Cart.CartId">
+        <input type="submit" value="Delete" class="btn btn-default" /> 
     </form>
 </div>

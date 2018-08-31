@@ -56,7 +56,12 @@ namespace WebShopMVC.Controllers
 	// GET: CartProducts
 	public async Task<IActionResult> Index()
         {
-            var webShopDBContext = _context.CartProducts.Include(c => c.Cart).Include(c => c.Product);
+			var customer = _context.Customer.Where(c => c.CustomerId == 1).FirstOrDefault();
+
+			var webShopDBContext = _context.CartProducts
+				.Include(c => c.Cart)
+				.Include(c => c.Product)
+				.Where(c => c.CartId == customer.CartId);
             return View(await webShopDBContext.ToListAsync());
         }
 
@@ -162,17 +167,17 @@ namespace WebShopMVC.Controllers
         }
 
         // GET: CartProducts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int ProductId,int CartId)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
             var cartProducts = await _context.CartProducts
                 .Include(c => c.Cart)
                 .Include(c => c.Product)
-                .FirstOrDefaultAsync(m => m.ProductId == id);
+                .FirstOrDefaultAsync(m => m.ProductId == ProductId && m.CartId == CartId);
             if (cartProducts == null)
             {
                 return NotFound();
@@ -184,9 +189,12 @@ namespace WebShopMVC.Controllers
         // POST: CartProducts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int CartId, int ProductId)
         {
-            var cartProducts = await _context.CartProducts.FindAsync(id);
+			var cartProducts = _context.CartProducts
+				.Include(c => c.Product)
+				.Where(c => c.CartId == CartId && c.ProductId == ProductId)
+				.FirstOrDefault();
             _context.CartProducts.Remove(cartProducts);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
