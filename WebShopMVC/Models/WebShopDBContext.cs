@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace WebShopMVC.Models
 {
-    public partial class WebShopDBContext : DbContext
-    {
+    public partial class WebShopDBContext : DbContext, IWebShopDBContext
+	{
         public WebShopDBContext()
         {
         }
