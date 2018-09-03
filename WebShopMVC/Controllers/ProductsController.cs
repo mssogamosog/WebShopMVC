@@ -7,30 +7,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using WebShopMVC.Managers;
 using WebShopMVC.Models;
 
 namespace WebShopMVC.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly IIndex<string, IWebShopDBContext> _contexts;
-		IWebShopDBContext _context;
+        IProductsManager _productsManager;
 
-		public ProductsController(IIndex<string, IWebShopDBContext> context)
-		{
-			_contexts = context;
-			SwitchOn();
-		}
-
-		void SwitchOn()
-		{
-			_context = _contexts[PublicContext._InMemory.ToString()];
-		}
-
-		// GET: Products
-		public async Task<IActionResult> Index()
+        public ProductsController(IProductsManager productsManager)
         {
-			return View(await _context.Product.ToListAsync());
+            _productsManager = productsManager;
+        }
+
+        // GET: Products
+        public async Task<IActionResult> Index()
+        {
+			return View(_productsManager.GetProducts());
 		}
 
         // GET: Products/Details/5
@@ -41,8 +35,7 @@ namespace WebShopMVC.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product
-                .FirstOrDefaultAsync(m => m.ProductId == id);
+            var product = _productsManager.Details(id);
             if (product == null)
             {
                 return NotFound();
@@ -66,8 +59,7 @@ namespace WebShopMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-				_context.Product.Add(product);
-				_context.SaveChanges();
+                _productsManager.Create(product);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -81,7 +73,7 @@ namespace WebShopMVC.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product.FindAsync(id);
+            var product = _productsManager.Edit(id);
             if (product == null)
             {
                 return NotFound();
@@ -105,8 +97,7 @@ namespace WebShopMVC.Controllers
             {
                 try
                 {
-					_context.Product.Update(product);
-					_context.SaveChanges();
+                    _productsManager.Edit(product);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -132,8 +123,7 @@ namespace WebShopMVC.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product
-                .FirstOrDefaultAsync(m => m.ProductId == id);
+            var product = _productsManager.Delete(id);
             if (product == null)
             {
                 return NotFound();
@@ -147,15 +137,14 @@ namespace WebShopMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Product.FindAsync(id);
-			_context.Product.Remove(product);
-			_context.SaveChanges();
+            _productsManager.DeleteConfirmed(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-            return _context.Product.Any(e => e.ProductId == id);
+            return _productsManager.ProductExists(id);
+    
         }
     }
 }

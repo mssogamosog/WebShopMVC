@@ -10,8 +10,8 @@ using WebShopMVC.Models;
 
 namespace WebShopMVC.Managers
 {
-	public class CartProductsManager 
-	{
+	public class CartProductsManager : ICartProductsManager
+    {
 		private readonly IIndex<string, IWebShopDBContext> _contexts;
 		IWebShopDBContext _context;
 
@@ -52,14 +52,64 @@ namespace WebShopMVC.Managers
 		}
 		public Task<List<CartProducts>> GetProducts()
 		{
-			var customer = _context.Customer.Where(c => c.CustomerId == 1).FirstOrDefault();
+            try
+            {
+                var customer = _context.Customer.Where(c => c.CustomerId == 1).FirstOrDefault();
 
-			var webShopDBContext = _context.CartProducts
-				.Include(c => c.Cart)
-				.Include(c => c.Product)
-				.Where(c => c.CartId == customer.CartId)
-				.ToListAsync();
-			return webShopDBContext;
+                var webShopDBContext = _context.CartProducts
+                    .Include(c => c.Cart)
+                    .Include(c => c.Product)
+                    .Where(c => c.CartId == customer.CartId)
+                    .ToListAsync();
+                return webShopDBContext;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+			
 		}
-	}
+        public void DeleteConfirmed(int CartId, int ProductId)
+        {
+            var cartProducts = _context.CartProducts
+                .Include(c => c.Product)
+                .Where(c => c.CartId == CartId && c.ProductId == ProductId)
+                .FirstOrDefault();
+            try
+            {
+                _context.CartProducts.Remove(cartProducts);
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
+        public CartProducts Delete(int ProductId, int CartId)
+        {
+            try
+            {
+                var cartProducts = _context.CartProducts
+                .Include(c => c.Cart)
+                .Include(c => c.Product)
+                .FirstOrDefault(m => m.ProductId == ProductId && m.CartId == CartId);
+                return cartProducts;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+            
+            
+        }
+
+        private bool CartProductsExists(int id)
+        {
+            return _context.CartProducts.Any(e => e.ProductId == id);
+        }
+    }
 }
