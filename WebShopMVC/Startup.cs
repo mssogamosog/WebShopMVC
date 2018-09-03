@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebShopMVC.Managers;
 using WebShopMVC.Models;
 
 namespace WebShopMVC
@@ -41,9 +42,11 @@ namespace WebShopMVC
 			ContainerBuilder builder = new ContainerBuilder();
 			builder.RegisterType<WebShopDBContext>().Keyed<IWebShopDBContext>("WebShopDBContext");
 			builder.RegisterType<WebShopDBContextInMemory>().Keyed<IWebShopDBContext>("WebShopDBContextInMemory");
-			//builder.RegisterType<WebShopDBContext>().As<IWebShopDBContext>().InstancePerLifetimeScope();
-			//services.AddDbContext<IWebShopDBContext>(opt => opt.UseInMemoryDatabase("InMemoryDb"));
-			builder.Populate(services);
+            builder.RegisterType<CartProductsManager>().As<ICartProductsManager>();
+            builder.RegisterType<ProductsManager>().As<IProductsManager>();
+            //builder.RegisterType<WebShopDBContext>().As<IWebShopDBContext>().InstancePerLifetimeScope();
+            //services.AddDbContext<IWebShopDBContext>(opt => opt.UseInMemoryDatabase("InMemoryDb"));
+            builder.Populate(services);
 			var container = builder.Build();
 			return container.Resolve<IServiceProvider>();
 		}

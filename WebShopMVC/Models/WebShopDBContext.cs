@@ -1,12 +1,15 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace WebShopMVC.Models
 {
     public partial class WebShopDBContext : DbContext, IWebShopDBContext
 	{
-        public WebShopDBContext()
+
+		private IConfiguration Configuration;
+		public WebShopDBContext()
         {
         }
 
@@ -15,7 +18,12 @@ namespace WebShopMVC.Models
         {
         }
 
-        public virtual DbSet<Cart> Cart { get; set; }
+		public WebShopDBContext(IConfiguration configuration)
+		{
+			Configuration = configuration;
+		}
+
+		public virtual DbSet<Cart> Cart { get; set; }
         public virtual DbSet<CartProducts> CartProducts { get; set; }
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
@@ -28,8 +36,7 @@ namespace WebShopMVC.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.\\sqlexpress;Database=WebShopDB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("myConnectionString"));
             }
         }
 
