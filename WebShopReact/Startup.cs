@@ -35,10 +35,6 @@ namespace WebShopReact
 			builder.RegisterType<WebShopDBContext>().Keyed<IWebShopDBContext>("WebShopDBContext");
 			builder.RegisterType<WebShopDBContextInMemory>().Keyed<IWebShopDBContext>("WebShopDBContextInMemory");
 			
-	
-
-			
-			
 			services.AddMvc().AddJsonOptions(options =>
 			{
 				options.SerializerSettings.ContractResolver = new DefaultContractResolver();

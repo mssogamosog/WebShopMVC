@@ -93,11 +93,9 @@ namespace WebShopReact.Controllers
 			}
 			return Ok(product);
 		}
-
-		// Delete: Products/5
 		
 
-		// POST: Products/Delete/5
+		// Delete: Products/5
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
