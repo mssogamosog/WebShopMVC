@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebShopMVC", "WebShopMVC\WebShopMVC.csproj", "{9CAA8658-42CF-4AF7-A846-F303A955E20E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebShopMVC", "WebShopMVC\WebShopMVC.csproj", "{9CAA8658-42CF-4AF7-A846-F303A955E20E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebShopReact", "WebShopReact\WebShopReact.csproj", "{4903E622-2510-4920-96CA-0AC73EBDDBF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{9CAA8658-42CF-4AF7-A846-F303A955E20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CAA8658-42CF-4AF7-A846-F303A955E20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CAA8658-42CF-4AF7-A846-F303A955E20E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4903E622-2510-4920-96CA-0AC73EBDDBF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4903E622-2510-4920-96CA-0AC73EBDDBF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4903E622-2510-4920-96CA-0AC73EBDDBF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4903E622-2510-4920-96CA-0AC73EBDDBF9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
