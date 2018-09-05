@@ -9,6 +9,8 @@ namespace WebShopMVC.Managers
         void AddToCart(Product product);
         CartProducts Delete(int ProductId, int CartId);
         void DeleteConfirmed(int CartId, int ProductId);
-        Task<List<CartProducts>> GetProducts();
-    }
+        List<CartProducts> GetProducts();
+		bool CartProductsExists(int ProductId, int CartId);
+
+	}
 }

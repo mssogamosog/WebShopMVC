@@ -28,24 +28,34 @@ namespace WebShopReact.Controllers
 		}
 
 		// GET: CartProducts
+		[Route("/[controller]/")]
 		[HttpGet]
-		public async Task<IActionResult> Index()
+		public  IActionResult Index()
 		{
 			var productsInCart = _cartProductsManager.GetProducts();
-			return Ok(await productsInCart);
+			return Ok(productsInCart);
 		}
 
 		// POST: CartProducts/Delete/5
+		[Route("/[controller]/{ProductId}/{CartId}")]
 		[HttpDelete]
-		public async Task<IActionResult> DeleteConfirmed(int CartId, int ProductId)
+		public async Task<IActionResult> DeleteConfirmed( [FromRoute]int ProductId,[FromRoute] int CartId)
 		{
-			_cartProductsManager.DeleteConfirmed(CartId, ProductId);
-			return RedirectToAction(nameof(Index));
+			if (CartProductsExists( ProductId, CartId))
+			{
+				_cartProductsManager.DeleteConfirmed(CartId, ProductId);
+				return RedirectToAction(nameof(Index));
+			}
+			else
+			{
+				return NotFound();
+			}
+			
 		}
 
-		private bool CartProductsExists(int id)
+		private bool CartProductsExists(int ProductId, int CartId)
 		{
-			return CartProductsExists(id);
+			return _cartProductsManager.CartProductsExists( ProductId,  CartId);
 		}
 	}
 }

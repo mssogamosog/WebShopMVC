@@ -112,8 +112,9 @@ namespace WebShopMVC.Managers
         }
         public void DeleteConfirmed(int id)
         {
-            var product =  _context.Product.FindAsync(id);
-            _context.Product.Remove(product.Result);
+            var product =  _context.Product
+                .FirstOrDefault(m => m.ProductId == id);
+            _context.Product.Remove(product);
             _context.SaveChanges();
         }
         public bool ProductExists(int id)

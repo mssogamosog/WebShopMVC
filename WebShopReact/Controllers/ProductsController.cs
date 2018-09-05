@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +54,7 @@ namespace WebShopReact.Controllers
 			if (ModelState.IsValid)
 			{
 				_productsManager.Create(product);
-				return CreatedAtAction("Details", new { id = product.ProductId }, product);
+				return RedirectToAction(nameof(Index));
 			}
 			else
 			{
@@ -103,8 +104,17 @@ namespace WebShopReact.Controllers
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			_productsManager.DeleteConfirmed(id);
-			return RedirectToAction(nameof(Index));
+			try
+			{
+				_productsManager.DeleteConfirmed(id);
+				return RedirectToAction(nameof(Index));
+			}
+			catch (Exception)
+			{
+				throw new ValidationException("key dependence");
+			}
+			
+			
 		}
 
 		private bool ProductExists(int id)

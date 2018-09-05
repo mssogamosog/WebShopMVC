@@ -50,7 +50,7 @@ namespace WebShopMVC.Managers
 			}
 			_context.SaveChanges();
 		}
-		public Task<List<CartProducts>> GetProducts()
+		public List<CartProducts> GetProducts()
 		{
             try
             {
@@ -60,7 +60,7 @@ namespace WebShopMVC.Managers
                     .Include(c => c.Cart)
                     .Include(c => c.Product)
                     .Where(c => c.CartId == customer.CartId)
-                    .ToListAsync();
+                    .ToList();
                 return webShopDBContext;
             }
             catch (Exception)
@@ -76,16 +76,18 @@ namespace WebShopMVC.Managers
                 .Include(c => c.Product)
                 .Where(c => c.CartId == CartId && c.ProductId == ProductId)
                 .FirstOrDefault();
-            try
-            {
-                _context.CartProducts.Remove(cartProducts);
-                _context.SaveChanges();
-            }
-            catch (Exception)
-            {
+			try
+			{
+				_context.CartProducts.Remove(cartProducts);
+				_context.SaveChanges();
+			}
+			catch (Exception)
+			{
 
-                throw;
-            }
+				throw;
+			}
+			
+            
             
         }
         public CartProducts Delete(int ProductId, int CartId)
@@ -107,9 +109,12 @@ namespace WebShopMVC.Managers
             
         }
 
-        private bool CartProductsExists(int id)
+        public bool CartProductsExists(int ProductId, int CartId)
         {
-            return _context.CartProducts.Any(e => e.ProductId == id);
-        }
+            return _context.CartProducts
+				.Include(c => c.Cart)
+				.Include(c => c.Product)
+				.Any(m => m.ProductId == ProductId && m.CartId == CartId);
+		}
     }
 }

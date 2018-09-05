@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace WebShopMVC.Models
@@ -17,8 +18,8 @@ namespace WebShopMVC.Models
         public int Quantity { get; set; }
         public double? Price { get; set; }
         public int? OrderId { get; set; }
-
-        public ICollection<CartProducts> CartProducts { get; set; }
+		[JsonIgnore]
+		public ICollection<CartProducts> CartProducts { get; set; }
         public ICollection<ProductCategory> ProductCategory { get; set; }
         public ICollection<ProductOrder> ProductOrder { get; set; }
     }

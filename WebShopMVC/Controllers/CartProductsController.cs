@@ -28,10 +28,10 @@ namespace WebShopMVC.Controllers
 		}
 	
 	// GET: CartProducts
-	public async Task<IActionResult> Index()
+	public  IActionResult Index()
         {
             var productsInCart = _cartProductsManager.GetProducts();
-            return View(await productsInCart);
+            return View( productsInCart);
         }
 
 
