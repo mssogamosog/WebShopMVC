@@ -33,6 +33,32 @@ export class Products extends Component {
         this.closeModal = this.closeModal.bind(this);
     }
 
+    reloadProducts() {
+        this.state = {
+            product: [],
+            loading: true,
+            showCreate: false,
+            showDetails: false,
+            showUpdate: false,
+            showModal: true,
+            activeId: 0
+        };
+        fetch('Products/')
+            .then(response => response.json())
+            .then(data => {
+                this.setState({
+                    product: data,
+                    loading: false,
+                    showCreate: false,
+                    showDetails: false,
+                    showUpdate: false,
+                    showModal: true,
+                    activeId: 0
+                });
+            });
+        this.closeModal = this.closeModal.bind(this);
+    }
+
     handleCreate() {
         this.setState({ showCreate: true, showDetails: false, showUpdate: false })
     }
@@ -47,7 +73,7 @@ export class Products extends Component {
 
     handleDelete(id) {
         if (!window.confirm("Are you sure to delete this item?"))
-            return
+            return 
         fetch('Products/' + id, { method: 'delete' })
             .then(data => {
                 this.setState({
@@ -124,7 +150,7 @@ export class Products extends Component {
     handlePopupSave(success) {
         if (success)
             this.setState({ showCreate: false, showUpdate: false })
-
+        this.reloadProducts()
     }
 
     render() {

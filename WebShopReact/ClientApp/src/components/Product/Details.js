@@ -7,7 +7,7 @@ export class Details extends React.Component {
             product: null,
             loading: true
         };
-
+        this.updateInputValue = this.updateInputValue.bind(this);
         fetch('Products/' + this.props.id, { method: 'get' })
             .then(response => response.json())
             .then(data => {
@@ -23,6 +23,25 @@ export class Details extends React.Component {
             {contents}
         </React.Fragment>);
     }
+    addTocart(product) {
+         if (this.state.inputValue > 0) {
+            product.quantity = this.state.inputValue;
+             fetch("CartProducts/",
+                {
+                    method: "post",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(product)
+                })
+                .then(data => {
+                    this.setState({ addedToCart: true });
+                })
+        }
+    }
+    updateInputValue(event) {
+        this.setState({
+            inputValue: event.target.value
+        });
+    }
     renderDetails(product) {
         console.log("renderDetails: " + product);
         return (
@@ -35,6 +54,14 @@ export class Details extends React.Component {
                 <div>{product.Quantity}</div>
                 <label>Price</label>
                 <div>{product.Price}</div>
+                <td>
+                   
+                    <label>Quantity</label>
+                    <input id='CartQuantity' name='CartQuantity' type="number" defaultValue="0" onChange={this.updateInputValue} />
+                    <button className="action" onClick={() => this.addTocart(product)}>Add To Cart</button>
+                  
+                </td>
             </div>);
     }
+
 }

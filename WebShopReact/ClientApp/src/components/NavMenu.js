@@ -9,21 +9,21 @@ export class NavMenu extends Component {
 
     render() {
         return (
-
             <Navbar inverse fixedTop fluid collapseOnSelect>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <Link to={'/'}>Products</Link>
+                        <Link to={'/'}>WebShop</Link>
                     </Navbar.Brand>
                     <Navbar.Toggle />
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Nav>
-                        <LinkContainer to={'/Products'}>
+                        <LinkContainer to={'/'} exact>
                             <NavItem>
-                                <Glyphicon glyph='education' /> Products
-                        </NavItem>
+                                <Glyphicon glyph='th-list' /> Products
+                            </NavItem>
                         </LinkContainer>
+                        
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

@@ -64,34 +64,38 @@ namespace WebShopReact.Controllers
 		// POST: Products/Edit/5
 		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPut]
+		[HttpPut("{id}")]
 		public async Task<IActionResult> Edit(int id, [FromBody] Product product)
 		{
-			if (id != product.ProductId)
+			if (!ProductExists(id))
 			{
 				return NotFound();
 			}
-
-			if (ModelState.IsValid)
+			else
 			{
-				try
+				product.ProductId = id;
+				if (ModelState.IsValid)
 				{
-					_productsManager.Edit(product);
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!ProductExists(product.ProductId))
+					try
 					{
-						return NotFound();
+						_productsManager.Edit(product);
 					}
-					else
+					catch (DbUpdateConcurrencyException)
 					{
-						throw;
+						if (!ProductExists(product.ProductId))
+						{
+							return NotFound();
+						}
+						else
+						{
+							throw;
+						}
 					}
+					return RedirectToAction(nameof(Index));
 				}
-				return RedirectToAction(nameof(Index));
+				return Ok(product);
 			}
-			return Ok(product);
+			
 		}
 		
 

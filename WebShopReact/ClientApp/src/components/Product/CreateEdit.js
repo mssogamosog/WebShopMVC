@@ -19,7 +19,7 @@ export class CreateEdit extends Component {
         e.preventDefault()
         let meth = (this.props.dbaction == "edit" ? "put" : "post")
         let form = Element = document.querySelector('#frmCreateEdit')
-        let url = (this.props.dbaction == "edit" ? 'Products/' + document.getElementById('Id').value : 'Products/')
+        let url = (this.props.dbaction == "edit" ? 'Products/' + this.props.id : 'Products/')
 
         fetch(url,
             {
@@ -47,7 +47,7 @@ export class CreateEdit extends Component {
         if (this.props.dbaction != "edit")
             item = { Name: '', Quantity: '', Price: 0 }
         return <form id='frmCreateEdit'>
-            {this.props.dbaction == 'edit' ? <input id='productId' name='productId' type='hidden' value={item.productId} />
+            {this.props.dbaction == 'edit' ? <input id='ProductId' name='ProductId' type='hidden' value={item.ProductId} />
                 : null}
             <label>Name</label>
             <input id='Name' name='Name' type="text" defaultValue={item.Name != null ? (item.Name + '') : ''} />
