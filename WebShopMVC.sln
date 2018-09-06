@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28010.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebShopMVC", "WebShopMVC\WebShopMVC.csproj", "{9CAA8658-42CF-4AF7-A846-F303A955E20E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebShopReact", "WebShopReact\WebShopReact.csproj", "{4903E622-2510-4920-96CA-0AC73EBDDBF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebShopReact", "WebShopReact\WebShopReact.csproj", "{4903E622-2510-4920-96CA-0AC73EBDDBF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
