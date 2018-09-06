@@ -11,10 +11,13 @@ namespace WebShopMVC.Models
         }
 
         public int CustomerId { get; set; }
-        public string FirtsName { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string ContactInfo { get; set; }
+        public string Email { get; set; }
         public int? CartId { get; set; }
+        public string Username { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
 
         public Cart Cart { get; set; }
         public ICollection<Order> Order { get; set; }

@@ -5,9 +5,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace WebShopMVC.Models
 {
-    public partial class WebShopDBContext : DbContext, IWebShopDBContext
+	public partial class WebShopDBContext : DbContext, IWebShopDBContext
 	{
-
 		private IConfiguration Configuration;
 		public WebShopDBContext()
         {
@@ -17,12 +16,10 @@ namespace WebShopMVC.Models
             : base(options)
         {
         }
-
 		public WebShopDBContext(IConfiguration configuration)
 		{
 			Configuration = configuration;
 		}
-
 		public virtual DbSet<Cart> Cart { get; set; }
         public virtual DbSet<CartProducts> CartProducts { get; set; }
         public virtual DbSet<Category> Category { get; set; }
@@ -36,9 +33,9 @@ namespace WebShopMVC.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("myConnectionString"));
-            }
-        }
+				optionsBuilder.UseSqlServer(Configuration.GetConnectionString("myConnectionString"));
+			}
+		}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -66,11 +63,17 @@ namespace WebShopMVC.Models
 
             modelBuilder.Entity<Customer>(entity =>
             {
-                entity.Property(e => e.ContactInfo).HasMaxLength(50);
+                entity.Property(e => e.Email).HasMaxLength(50);
 
-                entity.Property(e => e.FirtsName).HasMaxLength(50);
+                entity.Property(e => e.FirstName).HasMaxLength(50);
 
                 entity.Property(e => e.LastName).HasMaxLength(50);
+
+                entity.Property(e => e.PasswordHash).HasMaxLength(100);
+
+                entity.Property(e => e.PasswordSalt).HasMaxLength(100);
+
+                entity.Property(e => e.Username).HasMaxLength(50);
 
                 entity.HasOne(d => d.Cart)
                     .WithMany(p => p.Customer)
@@ -90,7 +93,7 @@ namespace WebShopMVC.Models
             {
                 entity.Property(e => e.Name).HasMaxLength(50);
 
-                entity.Property(e => e.Quantity).HasMaxLength(50);
+                entity.Property(e => e.OrderId).HasMaxLength(10);
             });
 
             modelBuilder.Entity<ProductCategory>(entity =>

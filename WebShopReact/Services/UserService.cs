@@ -1,36 +1,36 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebApi.Entities;
-using WebApi.Helpers;
+using WebShopMVC.Models;
+using WebShopReact.Helpers;
 
 namespace WebApi.Services
 {
-    public interface IUserService
+    public interface ICustomerService
     {
-        User Authenticate(string username, string password);
-        IEnumerable<User> GetAll();
-        User GetById(int id);
-        User Create(User user, string password);
-        void Update(User user, string password = null);
+		Customer Authenticate(string username, string password);
+        IEnumerable<Customer> GetAll();
+		Customer GetById(int id);
+		Customer Create(Customer user, string password);
+        void Update(Customer user, string password = null);
         void Delete(int id);
     }
 
-    public class UserService : IUserService
+    public class CustomerService : ICustomerService
     {
-        private DataContext _context;
+        private WebShopDBContext _context;
 
-        public UserService(DataContext context)
+        public CustomerService(WebShopDBContext context)
         {
             _context = context;
         }
 
-        public User Authenticate(string username, string password)
+        public Customer Authenticate(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;
 
-            var user = _context.Users.SingleOrDefault(x => x.Username == username);
+            var user = _context.Customer.SingleOrDefault(x => x.Username == username);
 
             // check if username exists
             if (user == null)
@@ -44,23 +44,23 @@ namespace WebApi.Services
             return user;
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<Customer> GetAll()
         {
-            return _context.Users;
+            return _context.Customer;
         }
 
-        public User GetById(int id)
+        public Customer GetById(int id)
         {
-            return _context.Users.Find(id);
+            return _context.Customer.Find(id);
         }
 
-        public User Create(User user, string password)
+        public Customer Create(Customer user, string password)
         {
             // validation
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required");
 
-            if (_context.Users.Any(x => x.Username == user.Username))
+            if (_context.Customer.Any(x => x.Username == user.Username))
                 throw new AppException("Username \"" + user.Username + "\" is already taken");
 
             byte[] passwordHash, passwordSalt;
@@ -69,15 +69,15 @@ namespace WebApi.Services
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-            _context.Users.Add(user);
+            _context.Customer.Add(user);
             _context.SaveChanges();
 
             return user;
         }
 
-        public void Update(User userParam, string password = null)
+        public void Update(Customer userParam, string password = null)
         {
-            var user = _context.Users.Find(userParam.Id);
+            var user = _context.Customer.Find(userParam.CustomerId);
 
             if (user == null)
                 throw new AppException("User not found");
@@ -85,7 +85,7 @@ namespace WebApi.Services
             if (userParam.Username != user.Username)
             {
                 // username has changed so check if the new username is already taken
-                if (_context.Users.Any(x => x.Username == userParam.Username))
+                if (_context.Customer.Any(x => x.Username == userParam.Username))
                     throw new AppException("Username " + userParam.Username + " is already taken");
             }
 
@@ -104,16 +104,16 @@ namespace WebApi.Services
                 user.PasswordSalt = passwordSalt;
             }
 
-            _context.Users.Update(user);
+            _context.Customer.Update(user);
             _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            var user = _context.Users.Find(id);
+            var user = _context.Customer.Find(id);
             if (user != null)
             {
-                _context.Users.Remove(user);
+                _context.Customer.Remove(user);
                 _context.SaveChanges();
             }
         }

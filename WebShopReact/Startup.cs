@@ -11,12 +11,13 @@ using System;
 using WebShopMVC.Managers;
 using WebShopMVC.Models;
 using System.Threading.Tasks;
-using WebApi.Helpers;
-using WebApi.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using AutoMapper;
+using WebShopReact.Helpers;
+using WebApi.Services;
+using WebShop.Managers;
 
 namespace WebShopReact
 {
@@ -36,8 +37,11 @@ namespace WebShopReact
 			services.AddMvc();
 			services.AddCors();
 			services.AddAutoMapper();
+
 			//services.AddScoped<IProductsManager, ProductsManager>();
-			ContainerBuilder builder = new ContainerBuilder(); 
+			ContainerBuilder builder = new ContainerBuilder();
+			builder.RegisterType<CustomerManager>().As<ICustomerManager>();
+			builder.RegisterType<TokenHelper>().As<ITokenHelper>();
 			builder.RegisterType<CartProductsManager>().As<ICartProductsManager>();
 			builder.RegisterType<ProductsManager>().As<IProductsManager>();
 			builder.RegisterType<WebShopDBContext>().Keyed<IWebShopDBContext>("WebShopDBContext");
@@ -50,7 +54,7 @@ namespace WebShopReact
 
 			// configure jwt authentication
 			var appSettings = appSettingsSection.Get<AppSettings>();
-			var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+			var key = Encoding.ASCII.GetBytes((string)(Configuration.GetValue(typeof(string), "Key")));
 			services.AddAuthentication(x =>
 			{
 				x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,7 +66,7 @@ namespace WebShopReact
 				{
 					OnTokenValidated = context =>
 					{
-						var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+						var userService = context.HttpContext.RequestServices.GetRequiredService<ICustomerService>();
 						var userId = int.Parse(context.Principal.Identity.Name);
 						var user = userService.GetById(userId);
 						if (user == null)
@@ -85,7 +89,7 @@ namespace WebShopReact
 			});
 
 			// configure DI for application services
-			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<ICustomerService, CustomerService>();
 			services.AddMvc().AddJsonOptions(options =>
 			{
 				options.SerializerSettings.ContractResolver = new DefaultContractResolver();

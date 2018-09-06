@@ -65,7 +65,7 @@ namespace WebShopMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,FirtsName,LastName,ContactInfo,CartId")] Customer customer)
+        public async Task<IActionResult> Create([Bind("CustomerId,FirstName,LastName,Email,CartId")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace WebShopMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,FirtsName,LastName,ContactInfo,CartId")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,FirstName,LastName,Email,CartId")] Customer customer)
         {
             if (id != customer.CustomerId)
             {

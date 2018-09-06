@@ -11,6 +11,6 @@ namespace WebShopMVC.Models
         public int? Quantity { get; set; }
 		[JsonIgnore]
 		public Cart Cart { get; set; }
-		public Product Product { get; set; }
+        public Product Product { get; set; }
     }
 }

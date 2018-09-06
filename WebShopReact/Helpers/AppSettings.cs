@@ -1,4 +1,4 @@
-namespace WebApi.Helpers
+namespace WebShopReact.Helpers
 {
     public class AppSettings
     {
