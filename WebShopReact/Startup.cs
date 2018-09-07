@@ -1,5 +1,4 @@
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +17,8 @@ using AutoMapper;
 using WebShopReact.Helpers;
 using WebApi.Services;
 using WebShop.Managers;
+using Microsoft.AspNetCore.Http;
+using Alexinea.Autofac.Extensions.DependencyInjection;
 
 namespace WebShopReact
 {
@@ -37,10 +38,12 @@ namespace WebShopReact
 			services.AddMvc();
 			services.AddCors();
 			services.AddAutoMapper();
-
+			services.AddHttpContextAccessor();
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			//services.AddScoped<IProductsManager, ProductsManager>();
 			ContainerBuilder builder = new ContainerBuilder();
 			builder.RegisterType<CustomerManager>().As<ICustomerManager>();
+			builder.RegisterType<CustomerService>().As<ICustomerService>(); 
 			builder.RegisterType<TokenHelper>().As<ITokenHelper>();
 			builder.RegisterType<CartProductsManager>().As<ICartProductsManager>();
 			builder.RegisterType<ProductsManager>().As<IProductsManager>();
@@ -118,15 +121,22 @@ namespace WebShopReact
 				app.UseHsts();
 			}
 
+			app.UseCors(x => x
+				.AllowAnyOrigin()
+				.AllowAnyMethod()
+				.AllowAnyHeader()
+				.AllowCredentials());
+
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 			app.UseSpaStaticFiles();
+			app.UseAuthentication();
 
 			app.UseMvc(routes =>
 			{
 				routes.MapRoute(
 					name: "default",
-					template: "{controller}/{action=Index}/{id?}");
+					template: "api/{controller}/{action=Index}/{id?}");
 			});
 
 			app.UseSpa(spa =>

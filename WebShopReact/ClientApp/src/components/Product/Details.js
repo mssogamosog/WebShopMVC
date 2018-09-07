@@ -27,9 +27,13 @@ export class Details extends React.Component {
          if (this.state.inputValue > 0) {
             product.quantity = this.state.inputValue;
              fetch("CartProducts/",
-                {
-                    method: "post",
-                    headers: { 'Content-Type': 'application/json' },
+                 {
+
+                     method: "post",
+                     headers: {
+                         'Content-Type': 'application/json',
+                         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIyIiwibmJmIjoxNTM2MzU3OTA5LCJleHAiOjE1MzY5NjI3MDksImlhdCI6MTUzNjM1NzkwOX0.R0WAiggOh5Zh7mSeord_RNnQHGBsD6Hp2LL7EnKT940'
+                     },
                     body: JSON.stringify(product)
                 })
                 .then(data => {

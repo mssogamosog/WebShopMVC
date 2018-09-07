@@ -28,7 +28,16 @@ export class NavMenu extends Component {
                                 <Glyphicon glyph='th-list' /> CartProducts
                             </NavItem>
                         </LinkContainer>
-                        
+                        <LinkContainer to={'/Customer'}>
+                            <NavItem>
+                                <Glyphicon glyph='user' /> User
+                             </NavItem>
+                        </LinkContainer>
+                        <LinkContainer to={'/Login'}>
+                            <NavItem>
+                                <Glyphicon glyph='login' /> Login
+                             </NavItem>
+                        </LinkContainer>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

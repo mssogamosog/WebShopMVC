@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -67,15 +68,22 @@ namespace WebShop.Managers
 
 			customer.PasswordHash = passwordHash;
 			customer.PasswordSalt = passwordSalt;
+
 			try
 			{
 				_context.Customer.Add(customer);
 				_context.SaveChanges();
+				var customeAdded = _context.Customer.Where(c => c.Email == customer.Email).FirstOrDefault();
+				Cart cart = new Cart() { CartId = customeAdded.CustomerId };
+				customeAdded.CartId = cart.CartId;
+				_context.Cart.Add(cart);
+				_context.SaveChanges();
 			}
-			catch
+			catch (DbUpdateException e)
 			{
-				//TODO
+				throw new ValidationException("Email already in use");
 			}
+			catch { }
 		}
 
 		public void UpdateCustomer(Customer customer)

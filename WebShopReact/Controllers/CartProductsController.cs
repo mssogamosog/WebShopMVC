@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebShopMVC.Managers;
@@ -11,6 +12,7 @@ namespace WebShopReact.Controllers
 {
     [Route("/[controller]")]
     [ApiController]
+	[Authorize]
 	public class CartProductsController : ControllerBase
 	{
 		ICartProductsManager _cartProductsManager;

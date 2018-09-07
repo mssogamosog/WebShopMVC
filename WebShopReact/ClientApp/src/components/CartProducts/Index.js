@@ -7,7 +7,16 @@ export class CartProducts extends Component {
             loading: true,
             activeId: 0
         };
-        fetch('CartProducts/')
+        fetch("CartProducts/",
+            {
+
+                method: "get",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIyIiwibmJmIjoxNTM2MzU3OTA5LCJleHAiOjE1MzY5NjI3MDksImlhdCI6MTUzNjM1NzkwOX0.R0WAiggOh5Zh7mSeord_RNnQHGBsD6Hp2LL7EnKT940'
+                },
+                body: JSON.stringify(CartProducts)
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({
@@ -21,13 +30,14 @@ export class CartProducts extends Component {
     handleRemoveFromCart(ProductId, CartId) {
         if (!window.confirm("Are you sure to delete this product?"))
             return
-        fetch('CartProducts/' + ProductId + '/' + CartId , { method: 'delete' })
+        fetch('CartProducts/' + ProductId + '/' + CartId, {
+            method: 'delete',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIyIiwibmJmIjoxNTM2MzU3OTA5LCJleHAiOjE1MzY5NjI3MDksImlhdCI6MTUzNjM1NzkwOX0.R0WAiggOh5Zh7mSeord_RNnQHGBsD6Hp2LL7EnKT940'
+            } })
             .then(data => {
-                this.setState({
-                    CartProducts: this.state.CartProducts.filter((rec) => {
-                        return rec.CartProducts.ProductId !== ProductId;
-                    })
-                })
+                
             })
     }
     renderTable(CartProducts) {

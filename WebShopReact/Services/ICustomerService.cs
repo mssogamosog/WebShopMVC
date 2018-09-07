@@ -1,3 +1,4 @@
+using Autofac.Features.Indexed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +19,21 @@ namespace WebApi.Services
 
     public class CustomerService : ICustomerService
     {
-        private WebShopDBContext _context;
+		private readonly IIndex<string, IWebShopDBContext> _contexts;
+		IWebShopDBContext _context;
 
-        public CustomerService(WebShopDBContext context)
-        {
-            _context = context;
-        }
+		public CustomerService(IIndex<string, IWebShopDBContext> context)
+		{
+			_contexts = context;
+			SwitchOn();
+		}
 
-        public Customer Authenticate(string username, string password)
+		void SwitchOn()
+		{
+			_context = _contexts[PublicContext._InMemory.ToString()];
+		}
+
+		public Customer Authenticate(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;

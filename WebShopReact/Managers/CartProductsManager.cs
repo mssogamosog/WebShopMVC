@@ -14,10 +14,10 @@ namespace WebShopMVC.Managers
 	public class CartProductsManager : ICartProductsManager
     {
 		private readonly IIndex<string, IWebShopDBContext> _contexts;
-		HttpContextAccessor _httpContextAccessor;
+		IHttpContextAccessor _httpContextAccessor;
 		IWebShopDBContext _context;
 
-		public CartProductsManager(IIndex<string, IWebShopDBContext> context, HttpContextAccessor httpContextAccessor)
+		public CartProductsManager(IIndex<string, IWebShopDBContext> context, IHttpContextAccessor httpContextAccessor)
 		{
 			_contexts = context;
 			_httpContextAccessor = httpContextAccessor;
@@ -29,7 +29,9 @@ namespace WebShopMVC.Managers
 			_context = _contexts[PublicContext._InMemory.ToString()];
 		}
 		public void AddToCart(Product product)
+
 		{
+			
 			var cId = Int32.Parse(_httpContextAccessor.HttpContext.User.Identity.Name);
 			var customer = _context.Customer.
 				Include(c => c.Cart).
@@ -57,9 +59,14 @@ namespace WebShopMVC.Managers
 		{
             try
             {
-                var customer = _context.Customer.Where(c => c.CustomerId == 1).FirstOrDefault();
+				var cId = Int32.Parse(_httpContextAccessor.HttpContext.User.Identity.Name);
+				var customer = _context.Customer.
+					Include(c => c.Cart).
+					Where(c => c.CustomerId == cId
+					)
+					.FirstOrDefault();
 
-                var webShopDBContext = _context.CartProducts
+				var webShopDBContext = _context.CartProducts
                     .Include(c => c.Cart)
                     .Include(c => c.Product)
                     .Where(c => c.CartId == customer.CartId)
