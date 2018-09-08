@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace WebShopMVC.Models
 {
@@ -14,5 +15,7 @@ namespace WebShopMVC.Models
 		DbSet<ProductOrder> ProductOrder { get; set; }
 
 		int SaveChanges();
+		DatabaseFacade Database { get; }
+
 	}
 }

@@ -68,22 +68,28 @@ namespace WebShop.Managers
 
 			customer.PasswordHash = passwordHash;
 			customer.PasswordSalt = passwordSalt;
-
-			try
+			using (var transaction = _context.Database.BeginTransaction())
 			{
-				_context.Customer.Add(customer);
-				_context.SaveChanges();
-				var customeAdded = _context.Customer.Where(c => c.Email == customer.Email).FirstOrDefault();
-				Cart cart = new Cart() { CartId = customeAdded.CustomerId };
-				customeAdded.CartId = cart.CartId;
-				_context.Cart.Add(cart);
-				_context.SaveChanges();
+				try
+			{
+				
+					_context.Customer.Add(customer);
+					_context.SaveChanges();
+					var customeAdded = _context.Customer.Where(c => c.Email == customer.Email).FirstOrDefault();
+					Cart cart = new Cart() { CartId = customeAdded.CustomerId };
+					customeAdded.CartId = cart.CartId;
+					_context.Cart.Add(cart);
+					_context.SaveChanges();
+					transaction.Commit();
+				
+				
 			}
 			catch (DbUpdateException e)
 			{
 				throw new ValidationException("Email already in use");
 			}
 			catch { }
+			}
 		}
 
 		public void UpdateCustomer(Customer customer)
