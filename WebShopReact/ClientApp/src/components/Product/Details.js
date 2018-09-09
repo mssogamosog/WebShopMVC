@@ -32,7 +32,7 @@ export class Details extends React.Component {
                      method: "post",
                      headers: {
                          'Content-Type': 'application/json',
-                         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIyIiwibmJmIjoxNTM2MzU3OTA5LCJleHAiOjE1MzY5NjI3MDksImlhdCI6MTUzNjM1NzkwOX0.R0WAiggOh5Zh7mSeord_RNnQHGBsD6Hp2LL7EnKT940'
+                         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJDb25uZWN0aW9uIjoiV2ViU2hvcERCQ29udGV4dEluTWVtb3J5IiwibmJmIjoxNTM2NTI4NjQzLCJleHAiOjE1MzcxMzM0NDMsImlhdCI6MTUzNjUyODY0M30.i2ARXehLJr01HalW7J5lNOnvZLQK98chZEghmMFWq3g'
                      },
                     body: JSON.stringify(product)
                 })

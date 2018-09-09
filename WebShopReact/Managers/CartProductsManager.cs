@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebShopMVC.Models;
+using WebShopReact.Helpers;
 
 namespace WebShopMVC.Managers
 {
@@ -16,17 +17,19 @@ namespace WebShopMVC.Managers
 		private readonly IIndex<string, IWebShopDBContext> _contexts;
 		IHttpContextAccessor _httpContextAccessor;
 		IWebShopDBContext _context;
+        IConnectionHelper _connectionHelper;
 
-		public CartProductsManager(IIndex<string, IWebShopDBContext> context, IHttpContextAccessor httpContextAccessor)
-		{
-			_contexts = context;
-			_httpContextAccessor = httpContextAccessor;
-			SwitchOn();
-		}
+        public CartProductsManager(IIndex<string, IWebShopDBContext> contexts, IHttpContextAccessor httpContextAccessor, IConnectionHelper connectionHelper)
+        {
+            _contexts = contexts;
+            _httpContextAccessor = httpContextAccessor;
+            _connectionHelper = connectionHelper;
+            SwitchOn();
+        }
 
-		void SwitchOn()
+        void SwitchOn()
 		{
-			_context = _contexts[PublicContext._InMemory.ToString()];
+			_context = _contexts[_connectionHelper.SetContext()];
 		}
 		public void AddToCart(Product product)
 

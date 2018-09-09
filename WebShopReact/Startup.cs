@@ -19,6 +19,8 @@ using WebApi.Services;
 using WebShop.Managers;
 using Microsoft.AspNetCore.Http;
 using Alexinea.Autofac.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using WebShopReact.Managers;
 
 namespace WebShopReact
 {
@@ -38,14 +40,17 @@ namespace WebShopReact
 			services.AddMvc();
 			services.AddCors();
 			services.AddAutoMapper();
-			services.AddHttpContextAccessor();
-			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+			services.AddHttpContextAccessor();     
+            //services.AddDbContext<WebShopDBContext>(options => options.UseSqlServer("Server=.\\sqlexpress;Database=WebShopDB;Trusted_Connection=True;"));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			//services.AddScoped<IProductsManager, ProductsManager>();
 			ContainerBuilder builder = new ContainerBuilder();
-			builder.RegisterType<CustomerManager>().As<ICustomerManager>();
-			builder.RegisterType<CustomerService>().As<ICustomerService>(); 
-			builder.RegisterType<TokenHelper>().As<ITokenHelper>();
-			builder.RegisterType<CartProductsManager>().As<ICartProductsManager>();
+			builder.RegisterType<CustomerManager>().As<ICustomerManager>(); 
+            builder.RegisterType<ConnectionManager>().As<IConnectionManager>();
+            builder.RegisterType<CustomerService>().As<ICustomerService>(); 
+			builder.RegisterType<TokenHelper>().As<ITokenHelper>(); 
+            builder.RegisterType<ConnectionHelper>().As<IConnectionHelper>();
+            builder.RegisterType<CartProductsManager>().As<ICartProductsManager>();
 			builder.RegisterType<ProductsManager>().As<IProductsManager>();
 			builder.RegisterType<WebShopDBContext>().Keyed<IWebShopDBContext>("WebShopDBContext");
 			builder.RegisterType<WebShopDBContextInMemory>().Keyed<IWebShopDBContext>("WebShopDBContextInMemory");

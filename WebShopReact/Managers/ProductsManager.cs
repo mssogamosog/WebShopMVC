@@ -1,27 +1,33 @@
 ﻿using Autofac.Features.Indexed;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebShopMVC.Models;
+using WebShopReact.Helpers;
 
 namespace WebShopMVC.Managers
 {
     public class ProductsManager : IProductsManager
     {
         private readonly IIndex<string, IWebShopDBContext> _contexts;
+        IHttpContextAccessor _httpContextAccessor;
         IWebShopDBContext _context;
+        IConnectionHelper _connectionHelper;
 
-        public ProductsManager(IIndex<string, IWebShopDBContext> context)
+        public ProductsManager(IIndex<string, IWebShopDBContext> contexts, IHttpContextAccessor httpContextAccessor, IConnectionHelper connectionHelper)
         {
-            _contexts = context;
+            _contexts = contexts;
+            _httpContextAccessor = httpContextAccessor;
+            _connectionHelper = connectionHelper;
             SwitchOn();
         }
 
         void SwitchOn()
         {
-            _context = _contexts[PublicContext._InMemory.ToString()];
+            _context = _contexts[_connectionHelper.SetContext()];
         }
 
         public List<Product> GetProducts()

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace WebShopMVC.Models
@@ -15,7 +16,7 @@ namespace WebShopMVC.Models
             if (!optionsBuilder.IsConfigured)
             {
 
-				optionsBuilder.UseInMemoryDatabase("InMemDb");
+				optionsBuilder.UseInMemoryDatabase("InMemDb").ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
 			}
         }
 		

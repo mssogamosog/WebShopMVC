@@ -1,5 +1,6 @@
 ﻿using Autofac.Features.Indexed;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -17,24 +18,29 @@ namespace WebShop.Managers
 {
 	public class CustomerManager : ICustomerManager
 	{
-		private readonly IIndex<string, IWebShopDBContext> _contexts;
-		IWebShopDBContext _context;
-		IMapper _mapper;
-		ITokenHelper _tokenHelper;
+        private readonly IIndex<string, IWebShopDBContext> _contexts;
+        IHttpContextAccessor _httpContextAccessor;
+        IWebShopDBContext _context;
+        IConnectionHelper _connectionHelper;
+        IMapper _mapper;
+        ITokenHelper _tokenHelper;
 
-		public CustomerManager(IMapper mapper, ITokenHelper tokenHelper, IIndex<string, IWebShopDBContext> context)
-		{
-			_mapper = mapper;
-			_tokenHelper = tokenHelper;
-			_contexts = context;
-			SwitchOn();
-		}
-		void SwitchOn()
-		{
-			_context = _contexts[PublicContext._InMemory.ToString()];
-		}
+        public CustomerManager(IIndex<string, IWebShopDBContext> contexts, IHttpContextAccessor httpContextAccessor,  IConnectionHelper connectionHelper, IMapper mapper, ITokenHelper tokenHelper)
+        {
+            _contexts = contexts;
+            _httpContextAccessor = httpContextAccessor;
+            _connectionHelper = connectionHelper;
+            _mapper = mapper;
+            _tokenHelper = tokenHelper;
+            SwitchOn();
+        }
 
-		public object Authenticate(CustomerDTO customerIn)
+        void SwitchOn()
+        {
+            _context = _contexts[_connectionHelper.SetContext()];
+        }
+
+        public object Authenticate(CustomerDTO customerIn)
 		{
 			var email = customerIn.Email;
 			var password = customerIn.Password;

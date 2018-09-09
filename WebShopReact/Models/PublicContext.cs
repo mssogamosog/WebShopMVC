@@ -9,6 +9,6 @@ namespace WebShopMVC.Models
 {
 	public static class PublicContext
 	{
-		public static InMemory _InMemory = InMemory.WebShopDBContext;
+		public static InMemory _InMemory = InMemory.WebShopDBContextInMemory;
 	}
 }
