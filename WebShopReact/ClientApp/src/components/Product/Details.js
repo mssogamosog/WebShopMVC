@@ -1,11 +1,13 @@
 ﻿import React from 'react';
-
+import Authenticate from '../Customer/Authenticate'
 export class Details extends React.Component {
     constructor(props) {
         super(props);
+        this.Auth = new Authenticate();
         this.state = {
             product: null,
-            loading: true
+            loading: true,
+            token: this.Auth.getToken()
         };
         this.updateInputValue = this.updateInputValue.bind(this);
         fetch('Products/' + this.props.id, { method: 'get' })
@@ -30,10 +32,10 @@ export class Details extends React.Component {
                  {
 
                      method: "post",
-                     headers: {
+                     headers: new Headers({
                          'Content-Type': 'application/json',
-                         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJDb25uZWN0aW9uIjoiV2ViU2hvcERCQ29udGV4dEluTWVtb3J5IiwibmJmIjoxNTM2NTI4NjQzLCJleHAiOjE1MzcxMzM0NDMsImlhdCI6MTUzNjUyODY0M30.i2ARXehLJr01HalW7J5lNOnvZLQK98chZEghmMFWq3g'
-                     },
+                         'Authorization': this.state.token
+                     }),
                     body: JSON.stringify(product)
                 })
                 .then(data => {
@@ -47,7 +49,6 @@ export class Details extends React.Component {
         });
     }
     renderDetails(product) {
-        console.log("renderDetails: " + product);
         return (
             <div className="details">
                 <label>Id</label>

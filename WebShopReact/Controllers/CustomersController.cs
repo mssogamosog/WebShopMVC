@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebShop.Managers;
@@ -29,11 +30,12 @@ namespace WebShop.Controllers
 		}
 
 		// GET: Customers/Details/5
-		[HttpGet("{id}")]
 		[Authorize]
-		public IActionResult Details(int? id)
+        [HttpGet]
+		public IActionResult Details()
 		{
-			var customer = _customerManager.GetCustomer((int)id);
+            var id = Int32.Parse(User.Identity.Name);
+            var customer = _customerManager.GetCustomer((int)id);
 			if (customer == null)
 			{
 				return NotFound();

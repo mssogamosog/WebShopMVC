@@ -22,6 +22,7 @@
                 else {
                     this.setToken(data);
                 }
+                window.alert("Welcome");
                 return data;
             })
     }

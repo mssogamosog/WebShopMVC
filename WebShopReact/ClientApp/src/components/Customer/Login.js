@@ -1,19 +1,23 @@
 ﻿import React, { Component } from 'react'
 import { CustomerCreateEdit } from './RegisterEdit'
 import Modal from 'react-modal';
+import Authenticate from './Authenticate'
+import { Customers } from './Customers'
 Modal.setAppElement('#root')
 export class Login extends Component {
     constructor(props) {
         super(props);
+        this.emailChanged = this.emailChanged.bind(this);
+        this.passChanged = this.passChanged.bind(this);
+        this.Auth = new Authenticate();
         this.state = {
             email: '',
             password: '',
             error: false,
             showRegister: false,
-            token: ''
+            token: this.Auth.getToken()
         }
-        this.emailChanged = this.emailChanged.bind(this);
-        this.passChanged = this.passChanged.bind(this);
+        
     }
     renderPopup() {
         if (!this.state.showRegister)
@@ -37,26 +41,20 @@ export class Login extends Component {
         e.preventDefault()
         if (this.state.password != '' && this.state.email != '') {
             let form = Element = document.querySelector('#frmLogin')
-            fetch('/customers/authenticate',
-                {
-                    method: 'post',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(this.formToJson(form))
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error != null) {
-                        this.setState({
-                            error: true
-                        })
-                    }
-                    else {
-                        this.setState({
-                            token: data.token
-                        })
-                        this.handleToken();
-                    }
-                })
+            let formInfo =  JSON.stringify(this.formToJson(form));
+            this.Auth.login(formInfo).then(res => {
+                if (res.error != null) {
+                    this.setState({
+                        error: true
+                    })
+                }
+                else {
+                    this.handleToken();
+                    this.props.history.replace('/Customers');
+                }
+            })    
+            
+
         }
     }
     handlePopupSave(success) {
@@ -81,7 +79,7 @@ export class Login extends Component {
             {contents}{this.renderPopup()}
             <br />
             <div>
-                {this.state.error == true ? <p> The Email or password are incorrect </p> : null}
+                {this.state.error == true ? <p> The Email or password are incorrect</p> : null}
             </div>
         </div>)
     }

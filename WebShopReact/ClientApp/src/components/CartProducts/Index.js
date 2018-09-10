@@ -1,20 +1,22 @@
 ﻿import React, { Component } from 'react';
+import Authenticate from '../../components/Customer/Authenticate'
 export class CartProducts extends Component {
     constructor(props) {
         super(props);
+        this.Auth = new Authenticate();
         this.state = {
             CartProducts: [],
             loading: true,
+            token: this.Auth.getToken(),
             activeId: 0
         };
         fetch("CartProducts/",
             {
 
                 method: "get",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJDb25uZWN0aW9uIjoiV2ViU2hvcERCQ29udGV4dEluTWVtb3J5IiwibmJmIjoxNTM2NTI4NjQzLCJleHAiOjE1MzcxMzM0NDMsImlhdCI6MTUzNjUyODY0M30.i2ARXehLJr01HalW7J5lNOnvZLQK98chZEghmMFWq3g'
-                },
+                headers: new Headers({
+                    'Authorization': this.state.token
+                }),
                 body: JSON.stringify(CartProducts)
             })
             .then(response => response.json())
@@ -30,15 +32,21 @@ export class CartProducts extends Component {
     handleRemoveFromCart(ProductId, CartId) {
         if (!window.confirm("Are you sure to delete this product?"))
             return
-        fetch('CartProducts/' + ProductId + '/' + CartId, {
-            method: 'delete',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJDb25uZWN0aW9uIjoiV2ViU2hvcERCQ29udGV4dEluTWVtb3J5IiwibmJmIjoxNTM2NTI4NjQzLCJleHAiOjE1MzcxMzM0NDMsImlhdCI6MTUzNjUyODY0M30.i2ARXehLJr01HalW7J5lNOnvZLQK98chZEghmMFWq3g'
-            } })
+        fetch('CartProducts/' + ProductId + '/' + CartId, 
+            {
+                headers: new Headers({
+                    'Authorization': this.state.token
+                })
+            }
+        )
+            .then(response => response.json())
             .then(data => {
-                
-            })
+                console.log(data);
+                this.setState({
+                    shoppingCart: data,
+                    loading: false
+                });
+            });
     }
     renderTable(CartProducts) {
         console.log(CartProducts);

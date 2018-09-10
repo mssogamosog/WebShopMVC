@@ -1,7 +1,9 @@
-﻿namespace WebShopReact.Managers
+﻿using WebShopMVC.Models;
+
+namespace WebShopReact.Managers
 {
     public interface IConnectionManager
     {
-        string SwitchConnection(string connection);
+        string ChangeConnection(InMemory connection);
     }
 }

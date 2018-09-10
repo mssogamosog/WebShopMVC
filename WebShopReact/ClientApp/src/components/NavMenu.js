@@ -25,17 +25,22 @@ export class NavMenu extends Component {
                         </LinkContainer>
                         <LinkContainer to={'/CartProducts'} exact>
                             <NavItem>
-                                <Glyphicon glyph='th-list' /> CartProducts
+                                <Glyphicon glyph='shopping-cart' /> CartProducts
                             </NavItem>
                         </LinkContainer>
-                        <LinkContainer to={'/Customer'}>
+                        <LinkContainer to={'/Customers'}>
                             <NavItem>
                                 <Glyphicon glyph='user' /> User
                              </NavItem>
                         </LinkContainer>
                         <LinkContainer to={'/Login'}>
                             <NavItem>
-                                <Glyphicon glyph='login' /> Login
+                                <Glyphicon glyph='log-in' /> Login
+                             </NavItem>
+                        </LinkContainer>
+                        <LinkContainer to={'/ChangeDatabase'}>
+                            <NavItem>
+                                <Glyphicon glyph='lock' /> ChangeDatabase
                              </NavItem>
                         </LinkContainer>
                     </Nav>

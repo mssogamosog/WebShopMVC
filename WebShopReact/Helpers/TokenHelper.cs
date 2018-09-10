@@ -13,7 +13,7 @@ namespace WebShopReact.Helpers
 {
 	public interface ITokenHelper
 	{
-        string GetToken(Customer customer);
+        string GetToken(Customer customer, InMemory connection = InMemory.WebShopDBContextInMemory);
 
     }
 	public class TokenHelper : ITokenHelper
@@ -23,7 +23,7 @@ namespace WebShopReact.Helpers
 		{
 			_configuration = configuration;
 		}
-		public string GetToken(Customer customer)
+		public string GetToken(Customer customer, InMemory connection = InMemory.WebShopDBContextInMemory)
 		{
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var key = Encoding.ASCII.GetBytes((string)(_configuration.GetValue(typeof(string), "Key")));
@@ -32,7 +32,7 @@ namespace WebShopReact.Helpers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, customer.CustomerId.ToString()),
-                    new Claim("Connection",InMemory.WebShopDBContextInMemory.ToString())
+                    new Claim("Connection",connection.ToString())
 				}),
 				Expires = DateTime.UtcNow.AddDays(7),
 				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

@@ -1,10 +1,16 @@
 ﻿import React, { Component } from 'react'
-
+import Authenticate from '../Customer/Authenticate'
 export class CreateEdit extends Component {
     constructor(props) {
         super(props);
+        this.Auth = new Authenticate();
         if (this.props.dbaction == "edit") {
-            this.state = { product: null, loading: true, save: false }
+            this.state = {
+                product: null,
+                loading: true,
+                save: false,
+                token: this.Auth.getToken(),
+            }
             fetch('Products/' + this.props.id, { method: 'get' })
                 .then(response => response.json())
                 .then(data => {
@@ -20,11 +26,13 @@ export class CreateEdit extends Component {
         let meth = (this.props.dbaction == "edit" ? "put" : "post")
         let form = Element = document.querySelector('#frmCreateEdit')
         let url = (this.props.dbaction == "edit" ? 'Products/' + this.props.id : 'Products/')
-
         fetch(url,
             {
                 method: meth,
-                headers: { 'Content-Type': 'application/json' },
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    'Authorization': this.state.token
+                }),
                 body: JSON.stringify(this.formToJson(form))
             })
             .then(data => {
